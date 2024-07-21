@@ -34,7 +34,11 @@ Workarounds for sas dataset rename bug
     github
     https://tinyurl.com/4vse3bwn
     https://github.com/rogerjdeangelis/workarounds-for-sas-dataset-rename-bug
-
+    
+    github                                                                     
+    https://tinyurl.com/4vse3bwn                                               
+    https://github.com/rogerjdeangelis/workarounds-for-sas-dataset-rename-bug  
+                                                                           
     As a side note:
     The option VALIDMEMNAME=EXTEND allows you to read or create sas objects like datasets
     whose name having spaces or special characters,
