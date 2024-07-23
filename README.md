@@ -1,5 +1,3 @@
-# workarounds-for-sas-dataset-rename-bug
-Workarounds for sas dataset rename bug 
     %let pgm=utl-workarounds-for-sas-dataset-rename-bug;
 
     Workarounds for sas dataset rename bug
@@ -7,6 +5,10 @@ Workarounds for sas dataset rename bug
     Thanks to the SAS-L Brain Trust
 
      Solutions
+
+         0 rename on input dataset
+           Tom Robison
+           barefootguru@gmail.com
 
          1 atrib statement
            Joe Matise <snoopy369@GMAIL.COM>
@@ -34,11 +36,11 @@ Workarounds for sas dataset rename bug
     github
     https://tinyurl.com/4vse3bwn
     https://github.com/rogerjdeangelis/workarounds-for-sas-dataset-rename-bug
-    
-    github                                                                     
-    https://tinyurl.com/4vse3bwn                                               
-    https://github.com/rogerjdeangelis/workarounds-for-sas-dataset-rename-bug  
-                                                                           
+
+    macros
+    https://tinyurl.com/y9nfugth
+    https://github.com/rogerjdeangelis/utl-macros-used-in-many-of-rogerjdeangelis-repositories
+
     As a side note:
     The option VALIDMEMNAME=EXTEND allows you to read or create sas objects like datasets
     whose name having spaces or special characters,
@@ -131,6 +133,19 @@ Workarounds for sas dataset rename bug
     /*  1    a           Num       8                                                                                          */
     /*                                                                                                                        */
     /**************************************************************************************************************************/
+
+    /*                                                      _                   _
+     _ __ ___ _ __ ___   __ _ _ __ ___   ___    ___  _ __  (_)_ __  _ __  _   _| |_
+    | `__/ _ \ `_ ` _ \ / _` | `_ ` _ \ / _ \  / _ \| `_ \ | | `_ \| `_ \| | | | __|
+    | | |  __/ | | | | | (_| | | | | | |  __/ | (_) | | | || | | | | |_) | |_| | |_
+    |_|  \___|_| |_| |_|\__,_|_| |_| |_|\___|  \___/|_| |_||_|_| |_| .__/ \__,_|\__|
+                                                                   |_|
+    */
+
+    options validvarname=any;
+    data class;
+      set sashelp.class(rename=Sex=sex);
+    run;
 
     /*         _        _ _           _        _                            _
     / |   __ _| |_ _ __(_) |__    ___| |_ __ _| |_ ___ _ __ ___   ___ _ __ | |_
@@ -580,3 +595,4 @@ Workarounds for sas dataset rename bug
      \___|_| |_|\__,_|
 
     */
+
