@@ -33,6 +33,8 @@ Thanks to the SAS-L Brain Trust
 
      5 Barts macros
 
+     6 master ian and soron
+
 github
 https://tinyurl.com/4vse3bwn
 https://github.com/rogerjdeangelis/workarounds-for-sas-dataset-rename-bug
@@ -134,13 +136,13 @@ run;quit;
 /*                                                                                                                        */
 /**************************************************************************************************************************/
 
-/*___                                                          _                   _       
- / _ \  _ __ ___ _ __ ___   __ _ _ __ ___   ___    ___  _ __  (_)_ __  _ __  _   _| |_     
-| | | || `__/ _ \ `_ ` _ \ / _` | `_ ` _ \ / _ \  / _ \| `_ \ | | `_ \| `_ \| | | | __|    
-| |_| || | |  __/ | | | | | (_| | | | | | |  __/ | (_) | | | || | | | | |_) | |_| | |_     
- \___/ |_|  \___|_| |_| |_|\__,_|_| |_| |_|\___|  \___/|_| |_||_|_| |_| .__/ \__,_|\__|    
-                                                                      |_|                  
-*/                                                                                         
+/*___                                                          _                   _
+ / _ \  _ __ ___ _ __ ___   __ _ _ __ ___   ___    ___  _ __  (_)_ __  _ __  _   _| |_
+| | | || `__/ _ \ `_ ` _ \ / _` | `_ ` _ \ / _ \  / _ \| `_ \ | | `_ \| `_ \| | | | __|
+| |_| || | |  __/ | | | | | (_| | | | | | |  __/ | (_) | | | || | | | | |_) | |_| | |_
+ \___/ |_|  \___|_| |_| |_|\__,_|_| |_| |_|\___|  \___/|_| |_||_|_| |_| .__/ \__,_|\__|
+                                                                      |_|
+*/
 
 
 options validvarname=any;
@@ -589,9 +591,93 @@ parmcards4;
 ;;;;
 run;quit;
 
+/*__                         _              _                               _
+ / /_    _ __ ___   __ _ ___| |_ ___ _ __  (_) __ _ _ __     __ _ _ __   __| |  ___  ___  _ __ ___  _ __
+| `_ \  | `_ ` _ \ / _` / __| __/ _ \ `__| | |/ _` | `_ \   / _` | `_ \ / _` | / __|/ _ \| `__/ _ \| `_ \
+| (_) | | | | | | | (_| \__ \ ||  __/ |    | | (_| | | | | | (_| | | | | (_| | \__ \ (_) | | | (_) | | | |
+ \___/  |_| |_| |_|\__,_|___/\__\___|_|    |_|\__,_|_| |_|  \__,_|_| |_|\__,_| |___/\___/|_|  \___/|_| |_|
+
+*/
+
+
+%macro utl_renamel ( old , new ) ;
+    /* Take two cordinated lists &old and &new and  */
+    /* return another list of corresponding pairs   */
+    /* separated by equal sign for use in a rename  */
+    /* statement or data set option.                */
+    /*                                              */
+    /*  usage:                                      */
+    /*    rename = (%renamel(old=A B C, new=X Y Z)) */
+    /*    rename %renamel(old=A B C, new=X Y Z);    */
+    /*                                              */
+    /* Ref: Ian Whitlock <whitloi1@westat.com>      */
+
+    %local i u v warn ;
+    %let warn = Warning: RENAMEL old and new lists ;
+    %let i = 1 ;
+    %let u = %scan ( &old , &i ) ;
+    %let v = %scan ( &new , &i ) ;
+    %do %while ( %quote(&u)^=%str() and %quote(&v)^=%str() ) ;
+        &u = &v
+        %let i = %eval ( &i + 1 ) ;
+        %let u = %scan ( &old , &i ) ;
+        %let v = %scan ( &new , &i ) ;
+    %end ;
+
+    %if (null&u ^= null&v) %then
+        %put &warn do not have same number of elements. ;
+
+%mend  utl_renamel ;
+
+
+%let old=%utl_varlist(sashelp.class);
+%let new=%qlowcase(%utl_varlist(sashelp.class));
+
+%put &=old;  OLD=Name Sex Age Height Weight
+%put &=new;  NEW=name sex age height weight
+
+options validvarname=any;
+data class;
+  set sashelp.class (rename = (%utl_renamel(old=&old, new=&new)));
+run;quit;
+
+/**************************************************************************************************************************/
+/*                                                                                                                        */
+/*        INPUT                                                                                                           */
+/*        =====                                                                                                           */
+/*                                                                                                                        */
+/*  Variables in Creation Order                                                                                           */
+/*                                                                                                                        */
+/* #    Variable    Type    Len                                                                                           */
+/*                                                                                                                        */
+/* 1    Name        Char      8                                                                                           */
+/* 2    Sex         Char      1                                                                                           */
+/* 3    Age         Num       8                                                                                           */
+/* 4    Height      Num       8                                                                                           */
+/* 5    Weight      Num       8                                                                                           */
+/*                                                                                                                        */
+/*                                                                                                                        */
+/*        OUTPUT                                                                                                          */
+/*        ======                                                                                                          */
+/*                                                                                                                        */
+/*  Variables in Creation Order                                                                                           */
+/*                                                                                                                        */
+/* #    Variable    Type    Len                                                                                           */
+/*                                                                                                                        */
+/* 1    name        Char      8                                                                                           */
+/* 2    sex         Char      1                                                                                           */
+/* 3    age         Num       8                                                                                           */
+/* 4    height      Num       8                                                                                           */
+/* 5    weight      Num       8                                                                                           */
+/*                                                                                                                        */
+/**************************************************************************************************************************/
+
+
 /*              _
   ___ _ __   __| |
  / _ \ `_ \ / _` |
 |  __/ | | | (_| |
  \___|_| |_|\__,_|
+
+*/
 
