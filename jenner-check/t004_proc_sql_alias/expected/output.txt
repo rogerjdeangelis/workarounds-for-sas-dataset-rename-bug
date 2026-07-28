@@ -1,0 +1,16 @@
+
+PROC CONTENTS
+-------------------------------------------------------------------------------
+
+Data Set Name: class
+Observations:  19
+Variables:     1
+
+Variables (in creation order):
+
+  #  Variable  Type    Len  Format  Label
+---  --------  ----  -----  ------  ------
+  1  sex       Char    200          Gender
+
+-------------------------------------------------------------------------------
+

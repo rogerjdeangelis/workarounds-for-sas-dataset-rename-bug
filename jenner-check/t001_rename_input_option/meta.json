@@ -1,0 +1,7 @@
+{
+  "bundle": "t001_rename_input_option",
+  "source_file": "workarounds-for-sas-dataset-rename-bug.sas",
+  "source_blob_sha": "e733a07c65bc77ed92a0d5199c21a6ee7999e562",
+  "source_commit": "40476cbbc74687f70ad18327e84c3eb636b3d153",
+  "notes": "Solution 0 (Tom Robison): RENAME= data set option on the input dataset renames Sex->sex; sashelp.class built-in, no external data. Added a PROC CONTENTS to show the result."
+}
